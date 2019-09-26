@@ -13,14 +13,12 @@ namespace SampleRestAPI.API.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IMovieRepository _movieRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMemoryCache _cache;
 
         public UserService(IUserRepository userRepository, IMovieRepository movieRepository, IUnitOfWork unitOfWork, IMemoryCache cache)
         {
             _userRepository = userRepository;
-            _movieRepository = movieRepository;
             _unitOfWork = unitOfWork;
             _cache = cache;
         }
@@ -43,15 +41,6 @@ namespace SampleRestAPI.API.Services
         {
             try
             {
-                /*
-                 Notice here we have to check if the Movie ID is valid before adding the user, to avoid errors.
-                 You can create a method into the MovieService class to return the movie and inject the service here if you prefer, but 
-                 it doesn't matter given the API scope.
-                */
-                var existingMovie = await _movieRepository.FindByIdAsync(user.MovieId);
-                if (existingMovie == null)
-                    return new UserResponse("Invalid Movie.");
-
                 await _userRepository.AddAsync(user);
                 await _unitOfWork.CompleteAsync();
 
@@ -71,14 +60,8 @@ namespace SampleRestAPI.API.Services
             if (existingUser == null)
                 return new UserResponse("User not found.");
 
-            var existingMovie = await _movieRepository.FindByIdAsync(user.MovieId);
-            if (existingMovie == null)
-                return new UserResponse("Invalid Movie.");
-
-            existingUser.Name = user.Name;
-            existingUser.UnitOfMeasurement = user.UnitOfMeasurement;
-            existingUser.QuantityInPackage = user.QuantityInPackage;
-            existingUser.MovieId = user.MovieId;
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
 
             try
             {

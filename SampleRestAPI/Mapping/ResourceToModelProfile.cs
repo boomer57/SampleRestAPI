@@ -11,8 +11,8 @@ namespace SampleRestAPI.API.Mapping
         {
             CreateMap<SaveMovieResource, Movie>();
 
-            CreateMap<SaveUserResource, User>()
-                .ForMember(src => src.UnitOfMeasurement, opt => opt.MapFrom(src => (EUnitOfMeasurement)src.UnitOfMeasurement));
+            //CreateMap<SaveUserResource, User>()
+            //    .ForMember(src => src.UnitOfMeasurement, opt => opt.MapFrom(src => (EUnitOfMeasurement)src.UnitOfMeasurement));
 
             CreateMap<UsersQueryResource, UsersQuery>();
         }

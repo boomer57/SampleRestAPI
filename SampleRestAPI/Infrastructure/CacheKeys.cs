@@ -4,5 +4,6 @@ namespace SampleRestAPI.API.Infrastructure
     {
         MoviesList,
         UsersList,
+        RatingsList
     }
 }

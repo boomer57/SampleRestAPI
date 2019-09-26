@@ -12,9 +12,9 @@ namespace SampleRestAPI.API.Mapping
         {
             CreateMap<Movie, MovieResource>();
 
-            CreateMap<User, UserResource>()
-                .ForMember(src => src.UnitOfMeasurement,
-                           opt => opt.MapFrom(src => src.UnitOfMeasurement.ToDescriptionString()));
+            //CreateMap<User, UserResource>()
+            //    .ForMember(src => src.UnitOfMeasurement,
+            //               opt => opt.MapFrom(src => src.UnitOfMeasurement.ToDescriptionString()));
 
             CreateMap<QueryResult<User>, QueryResultResource<User>>();
         }
