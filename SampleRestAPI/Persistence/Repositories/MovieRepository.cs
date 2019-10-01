@@ -14,11 +14,8 @@ namespace SampleRestAPI.API.Persistence.Repositories
         public async Task<IEnumerable<Movie>> ListAsync()
         {
             return await _context.Movies
-                                 .AsNoTracking()
+                                 .AsNoTracking()   // AsNoTracking tells EF Core to skip tracking changes on listed entities improving performance.
                                  .ToListAsync();
-
-            // AsNoTracking tells EF Core it doesn't need to track changes on listed entities. Disabling entity
-            // tracking makes the code a little faster
         }
 
         public async Task AddAsync(Movie movie)

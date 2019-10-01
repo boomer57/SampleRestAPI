@@ -9,33 +9,18 @@ using SampleRestAPI.API.Resources;
 
 namespace SampleRestAPI.API.Controllers
 {
-    [Route("/api/ratings")]
+    [Route("/api/rating")]
     [Produces("application/json")]
     [ApiController]
-    public class RatingsController : Controller
+    public class RatingController : Controller
     {
         private readonly IRatingService _ratingService;
         private readonly IMapper _mapper;
 
-        public RatingsController(IRatingService ratingService, IMapper mapper)
+        public RatingController(IRatingService ratingService, IMapper mapper)
         {
             _ratingService = ratingService;
             _mapper = mapper;
-        }
-
-        /// <summary>
-        /// Lists all Ratings.
-        /// </summary>
-        /// <returns>List as Ratings.</returns>
-        [HttpGet]
-        [ProducesResponseType(typeof(QueryResult<RatingResource>), 200)]
-        public async Task<QueryResultResource<RatingResource>> ListAsync([FromQuery] RatingsQueryResource query)
-        {
-            var ratingsQuery = _mapper.Map<RatingsQueryResource, RatingsQuery>(query);
-            var queryResult = await _ratingService.ListAsync(ratingsQuery);
-
-            var resource = _mapper.Map<QueryResult<Rating>, QueryResultResource<RatingResource>>(queryResult);
-            return resource;
         }
 
         /// <summary>

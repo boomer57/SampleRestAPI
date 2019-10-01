@@ -9,15 +9,15 @@ using SampleRestAPI.API.Resources;
 
 namespace SampleRestAPI.API.Controllers
 {
-    [Route("/api/users")]
+    [Route("/api/user")]
     [Produces("application/json")]
     [ApiController]
-    public class UsersController : Controller
+    public class UserController : Controller
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UsersController(IUserService userService, IMapper mapper)
+        public UserController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
             _mapper = mapper;

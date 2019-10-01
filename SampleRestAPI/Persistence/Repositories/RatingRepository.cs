@@ -17,26 +17,20 @@ namespace SampleRestAPI.API.Persistence.Repositories
         {
             IQueryable<Rating> queryable = _context.Ratings
                                                     .Include(p => p.MovieId)
-                                                    .AsNoTracking();
+                                                    .AsNoTracking();   // AsNoTracking tells EF Core to skip tracking changes on listed entities improving performance.
 
-            // AsNoTracking tells EF Core it doesn't need to track changes on listed entities. Disabling entity
-            // tracking makes the code a little faster
             if (query.MovieId.HasValue && query.MovieId > 0)
             {
                 queryable = queryable.Where(p => p.MovieId == query.MovieId);    
             }
-            
-            // Here I count all items present in the database for the given query, to return as part of the pagination data.
-            int totalItems = await queryable.CountAsync();
-            
-            // Here I apply a simple calculation to skip a given number of items, according to the current page and amount of items per page,
-            // and them I return only the amount of desired items. The methods "Skip" and "Take" do the trick here.
+                        
+            int totalItems = await queryable.CountAsync(); // Count all items in the database for the given query, returned as part of the pagination data.
+
             List<Rating> ratings = await queryable.Skip((query.Page - query.ItemsPerPage) * query.ItemsPerPage)
                                                     .Take(query.ItemsPerPage)
-                                                    .ToListAsync();
+                                                    .ToListAsync();  // Calculate how many items to skip, according to the current page and amount of items per page, then return only the amount of desired items. The methods "Skip" and "Take" do the trick here.
 
-            // Finally I return a query result, containing all items and the amount of items in the database (necessary for client calculations of pages).
-            return new QueryResult<Rating>
+            return new QueryResult<Rating>   // Return a query result, containing all items and the amount of items in the database (necessary for client calculations of pages).
             {
                 Items = ratings,
                 TotalItems = totalItems,

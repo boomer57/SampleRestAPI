@@ -8,9 +8,8 @@ namespace SampleRestAPI.API.Domain.Services
 {
     public interface IRatingService
     {
-         Task<QueryResult<Rating>> ListAsync(RatingsQuery ratingsQuery);
-         Task<RatingResponse> SaveAsync(Rating rating);
-         Task<RatingResponse> UpdateAsync(int id, Rating rating);
-         Task<RatingResponse> DeleteAsync(int id);
+        Task<RatingResponse> SaveAsync(Rating rating);
+        Task<RatingResponse> UpdateAsync(int id, Rating rating);
+        Task<RatingResponse> DeleteAsync(int id);
     }
 }

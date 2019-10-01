@@ -6,6 +6,6 @@ namespace SampleRestAPI.API.Resources
     {
         [Required]
         [MaxLength(30)]
-        public string Name { get; set; }
+        public string Title { get; set; }
     }
 }

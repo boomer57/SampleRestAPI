@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using SampleRestAPI.API.Domain.Models;
@@ -24,20 +25,6 @@ namespace SampleRestAPI.API.Services
             _ratingRepository = ratingRepository;
             _unitOfWork = unitOfWork;
             _cache = cache;
-        }
-
-        public async Task<QueryResult<Rating>> ListAsync(RatingsQuery query)
-        {
-            // Here I list the query result from cache if they exist, but now the data can vary according to the Movie ID, page and amount of
-            // items per page. I have to compose a cache to avoid returning wrong data.
-            string cacheKey = GetCacheKeyForRatingsQuery(query);
-
-            var ratings = await _cache.GetOrCreateAsync(cacheKey, (entry) => {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
-                return _ratingRepository.ListAsync(query);
-            });
-
-            return ratings;
         }
 
         public async Task<RatingResponse> SaveAsync(Rating rating)
@@ -113,18 +100,5 @@ namespace SampleRestAPI.API.Services
                 return new RatingResponse($"An error occurred when deleting the rating: {ex.Message}");
             }
         }
-        private string GetCacheKeyForRatingsQuery(RatingsQuery query)
-        {
-            string key = CacheKeys.RatingsList.ToString();
-
-            if (query.MovieId.HasValue && query.MovieId > 0)
-            {
-                key = string.Concat(key, "_", query.MovieId.Value);
-            }
-
-            key = string.Concat(key, "_", query.Page, "_", query.ItemsPerPage);
-            return key;
-        }
-
     }
 }
