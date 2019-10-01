@@ -7,7 +7,7 @@ namespace SampleRestAPI.API.Domain.Repositories
 {
     public interface IRatingRepository
     {
-        Task<QueryResult<Rating>> ListAsync(RatingsQuery query);
+        Task<QueryResult<Rating>> ListAsync();
         Task AddAsync(Rating rating);
         Task<Rating> FindByIdAsync(int id);
         void Update(Rating rating);

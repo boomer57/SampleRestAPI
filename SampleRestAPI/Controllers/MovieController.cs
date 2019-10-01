@@ -65,11 +65,8 @@ namespace SampleRestAPI.API.Controllers
         [Route("/api/movie/globalTop5")]
         public async Task<ActionResult<IEnumerable<Movie>>> ListGlobalTop5Async()
         {
-            //var ratingsQuery = _mapper.Map<RatingsQueryResource, RatingsQuery>(query);
             var queryResult = await _movieService.ListGlobalTopAsync(5);
-
-            var resource = _mapper.Map<QueryResult<Rating>, IEnumerable<RatingResource>>(queryResult);
-            return Ok(resource);
+            return Ok(queryResult) ;
         }
 
         /// <summary>
@@ -80,14 +77,9 @@ namespace SampleRestAPI.API.Controllers
         [Route("/api/movie/userTop5/{userId}")]
         public async Task<ActionResult<IEnumerable<Movie>>> ListUserTop5Async(int userId)
         {
-            var ratingsQuery = _mapper.Map<RatingsQueryResource, RatingsQuery>(query);
             var queryResult = await _movieService.ListUserTopAsync(5, userId);
-
-            var resource = _mapper.Map<QueryResult<Rating>, QueryResultResource<RatingResource>>(queryResult);
-            return Ok(resource);
+            return Ok(queryResult);
         }
-
-
 
         /// <summary>
         /// Saves a new Movie.

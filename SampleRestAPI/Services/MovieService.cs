@@ -42,17 +42,15 @@ namespace SampleRestAPI.API.Services
         {
             // Here I list the query result from cache if they exist, but now the data can vary according to the Movie ID, page and amount of
             // items per page. I have to compose a cache to avoid returning wrong data.
-            string cacheKey = GetCacheKeyForRatingsQuery(query);
+            //string cacheKey = GetCacheKeyForRatingsQuery(query);
 
-            var ratings = await _cache.GetOrCreateAsync(cacheKey, (entry) => {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
-                return _ratingRepository.ListAsync(query);
-            });
+            //var ratings = await _cache.GetOrCreateAsync(cacheKey, (entry) => {
+            //    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
+            //    return _ratingRepository.ListAsync(query);
+            //});
 
-            var ratingsSortedList = ratings.Items.OrderBy(r => r.RatingValue);
-
-            var ratingsSortedListOut = ratingsSortedList.Take<Rating>(topHowMany);
-
+            var ratings = await _ratingRepository.ListAsync();
+            var ratingsSortedListOut = ratings.Items.OrderBy(r => r.RatingValue).Take<Rating>(topHowMany);
             return ratingsSortedListOut;
 
             //return ratings;
@@ -62,17 +60,15 @@ namespace SampleRestAPI.API.Services
         {
             // Here I list the query result from cache if they exist, but now the data can vary according to the Movie ID, page and amount of
             // items per page. I have to compose a cache to avoid returning wrong data.
-            string cacheKey = GetCacheKeyForRatingsQuery(query);
+            //string cacheKey = GetCacheKeyForRatingsQuery(query);
 
-            var ratings = await _cache.GetOrCreateAsync(cacheKey, (entry) => {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
-                return _ratingRepository.ListAsync(query);
-            });
+            //var ratings = await _cache.GetOrCreateAsync(cacheKey, (entry) => {
+            //    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
+            //    return _ratingRepository.ListAsync(query);
+            //});
 
-            var ratingsSortedListForUser = ratings.Items.Where(r => r.UserId == userId).OrderBy(r => r.RatingValue);
-
-            var ratingsSortedListForUserOut = ratingsSortedListForUser.Take<Rating>(topHowMany);
-
+            var ratings = _ratingRepository.ListAsync();
+            var ratingsSortedListForUserOut = ratings.Items.Where(r => r.UserId == userId).OrderBy(r => r.RatingValue).Take<Rating>(topHowMany);
             return ratingsSortedListForUserOut;
 
             //return ratings;
